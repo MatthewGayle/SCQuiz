@@ -24,15 +24,15 @@ public class QuestionsData {
     private SQLiteOpenHelper  dbHelper;
 
     private static final String[] columns =  {
-            QuestionsDBHelper.ID,
-           QuestionsDBHelper.STATE,
-            QuestionsDBHelper.CAPITAL,
-            QuestionsDBHelper.CITY_TWO,
-            QuestionsDBHelper.CITY_THREE
+            DBHelper.ID,
+            DBHelper.STATE,
+            DBHelper.CAPITAL,
+            DBHelper.CITY_TWO,
+            DBHelper.CITY_THREE
     };
 
     public QuestionsData( Context context ) {
-        this.dbHelper = QuestionsDBHelper.getInstance( context );
+        this.dbHelper = DBHelper.getInstance( context );
     }
 
     public void open() {
@@ -52,14 +52,14 @@ public class QuestionsData {
         int columnIndex;
 
         try {
-            cursor = db.query(QuestionsDBHelper.TABLE_NAME, columns,null, null,
+            cursor = db.query(DBHelper.TABLE_NAME, columns,null, null,
                     null, null, null );
 
             if( cursor != null && cursor.getCount() > 0 ) {
 
                 while( cursor.moveToNext() ) {
                     System.out.println(cursor.getPosition());
-                    columnIndex = cursor.getColumnIndex(QuestionsDBHelper.STATE);
+                    columnIndex = cursor.getColumnIndex(DBHelper.STATE);
                     System.out.println(cursor.getString(columnIndex));
 
 
@@ -79,11 +79,11 @@ public class QuestionsData {
 
     public void insert(String state,String capital, String secondCity, String thirdCity) {
         ContentValues values = new ContentValues();
-        values.put(QuestionsDBHelper.STATE, state);
-        values.put(QuestionsDBHelper.CAPITAL, capital);
-        values.put(QuestionsDBHelper.CITY_TWO, secondCity);
-        values.put(QuestionsDBHelper.CITY_THREE, thirdCity);
-        long id = db.insert( QuestionsDBHelper.TABLE_NAME, null, values ); //returns ID
+        values.put(DBHelper.STATE, state);
+        values.put(DBHelper.CAPITAL, capital);
+        values.put(DBHelper.CITY_TWO, secondCity);
+        values.put(DBHelper.CITY_THREE, thirdCity);
+        long id = db.insert( DBHelper.TABLE_NAME, null, values ); //returns ID
 
 
 
