@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 
 import com.opencsv.CSVReader;
@@ -15,6 +16,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 
 // CONTAINS METHODS TO OPEN AND CLOSE DB, READ FROM CSV AND INSERT INTO DB
@@ -22,6 +24,7 @@ public class QuestionsData {
 
     private SQLiteDatabase   db;
     private SQLiteOpenHelper  dbHelper;
+    public static final String DEBUG_TAG = "QuestionsData";
 
     private static final String[] columns =  {
             DBHelper.ID,
@@ -46,9 +49,9 @@ public class QuestionsData {
         }
     }
 
-    public void read() {
+    public List<Questions> read() {
+        ArrayList<Questions> questions = new ArrayList<>();
         Cursor cursor = null;
-
         int columnIndex;
 
         try {
@@ -58,20 +61,52 @@ public class QuestionsData {
             if( cursor != null && cursor.getCount() > 0 ) {
 
                 while( cursor.moveToNext() ) {
-                    System.out.println(cursor.getPosition());
+                    //System.out.println(cursor.getPosition());
+                    //columnIndex = cursor.getColumnIndex(DBHelper.STATE);
+                    //System.out.println(cursor.getString(columnIndex));
+                    columnIndex = cursor.getColumnIndex(DBHelper.ID);
+                    long id = cursor.getLong(columnIndex);
+
                     columnIndex = cursor.getColumnIndex(DBHelper.STATE);
-                    System.out.println(cursor.getString(columnIndex));
+                    String state = cursor.getString(columnIndex);
+
+                    columnIndex = cursor.getColumnIndex(DBHelper.CAPITAL);
+                    String capital = cursor.getString(columnIndex);
+
+                    columnIndex = cursor.getColumnIndex(DBHelper.CITY_TWO);
+                    String cityTwo = cursor.getString(columnIndex);
+
+                    columnIndex = cursor.getColumnIndex(DBHelper.CITY_THREE);
+                    String cityThree = cursor.getString(columnIndex);
+
+                    Questions current = new Questions(state, capital, cityTwo, cityThree);
+                    current.setId(id);
+
+                    questions.add(current);
+                    Log.d(DEBUG_TAG, "Retrieved question: " + current);
+
 
 
                 }
 
 
             }
-
-        cursor.close();
-        } catch(Exception e) {
-
+            if( cursor != null )
+                Log.d( DEBUG_TAG, "Number of records from DB: " + cursor.getCount() );
+            else
+                Log.d( DEBUG_TAG, "Number of records from DB: 0" );
         }
+        catch( Exception e ){
+            Log.d( DEBUG_TAG, "Exception caught: " + e );
+        }
+        finally{
+            // we should close the cursor
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        // return a list of retrieved questions
+        return questions;
 
 
 
@@ -84,8 +119,8 @@ public class QuestionsData {
         values.put(DBHelper.CITY_TWO, secondCity);
         values.put(DBHelper.CITY_THREE, thirdCity);
         long id = db.insert( DBHelper.TABLE_NAME, null, values ); //returns ID
-
-
+        values.put(DBHelper.ID, id);
+        Log.d( DEBUG_TAG, "Stored new question with id: " + String.valueOf( id ) );
 
     }
 
@@ -106,7 +141,7 @@ public class QuestionsData {
                 String second = nextRow[2];
                 String third = nextRow[3];
                 insert(state, capital, second, third);
-                System.out.println(Arrays.toString(nextRow));
+
 
 
             }

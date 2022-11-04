@@ -11,7 +11,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     private static final String DB_NAME = "SCQuizDatabase";
-    private static final int DB_VERSION = 5;
+    private static final int DB_VERSION = 8;
 
     // for questions table
     public static final String TABLE_NAME= "Questions";
