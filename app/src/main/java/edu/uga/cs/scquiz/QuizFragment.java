@@ -97,6 +97,7 @@ public class QuizFragment extends Fragment {
                     startActivity(intent);
                 }
 
+                System.out.println(QuizView.check(QuizView.answerChosen, QuizView.answerCorrect));
 
 
             }
