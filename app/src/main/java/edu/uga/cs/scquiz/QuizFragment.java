@@ -91,7 +91,7 @@ public class QuizFragment extends Fragment {
 
                 }
 
-                if (answersPicked.size() == 6) {
+                if (answersPicked.size() == 6 && position == 6 ) {
 
                     Intent intent = new Intent(getActivity(),QuizResultActivity.class);
                     startActivity(intent);
