@@ -22,9 +22,21 @@ import java.util.Random;
  */
 public class QuizFragment extends Fragment {
 
-
+    private QuizData quizData;
     public static ArrayList<Questions> sixQuestions;
     public static HashMap<Integer,String> answersPicked;
+
+    /**
+     *  int count = 0;
+     *  for element, index in sixQuestions:
+     *   if (sixQuestions.get(index) == answersPicked.get(index) {
+     *       count++;
+     *   }
+     *
+     *   finalres = count / sixQuestion.size() or 6
+     *
+     *
+     */
     public QuizFragment() {
         // Required empty public constructor
     }
@@ -54,6 +66,9 @@ public class QuizFragment extends Fragment {
         }
         sixQuestions = getRandomQuestions();
         answersPicked = new HashMap<>();
+        quizData = new QuizData(getContext());
+        quizData.open();
+        quizData.insert();
     }
 
     @Override
@@ -97,6 +112,9 @@ public class QuizFragment extends Fragment {
                     startActivity(intent);
                 }
 
+
+
+                quizData.updateAnsweredCount(answersPicked.size());
                 System.out.println(QuizView.check(QuizView.answerChosen, QuizView.answerCorrect));
 
 
@@ -123,4 +141,6 @@ public class QuizFragment extends Fragment {
     public static ArrayList<Questions> getSixQuestions() {
         return sixQuestions;
     }
+
+
 }

@@ -11,7 +11,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     private static final String DB_NAME = "SCQuizDatabase";
-    private static final int DB_VERSION = 8;
+    private static final int DB_VERSION = 4;
 
     // for questions table
     public static final String TABLE_NAME= "Questions";
@@ -62,6 +62,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private DBHelper( Context context ) {
         super( context, DB_NAME, null, DB_VERSION );
+
     }
 
     public static synchronized DBHelper getInstance( Context context ) {
@@ -78,12 +79,15 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(QUESTIONS_TABLE );
         sqLiteDatabase.execSQL(QUIZ_TABLE);
         Log.d( "RANDOMTAG", "Table " + TABLE_NAME + " created" );
+
+
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
         sqLiteDatabase.execSQL( "drop table if exists " + TABLE_NAME  );
         sqLiteDatabase.execSQL( "drop table if exists " + QTABLE_NAME  );
         onCreate( sqLiteDatabase );
+        Log.d( "ONUPGRADE", "Table " + TABLE_NAME + " RE-CREATED" );
     }
 }

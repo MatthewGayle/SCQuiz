@@ -43,6 +43,8 @@ public class QuestionsData {
 
     }
 
+
+
     public void close() {
         if( dbHelper != null ) {
             dbHelper.close();
@@ -119,7 +121,6 @@ public class QuestionsData {
         values.put(DBHelper.CITY_TWO, secondCity);
         values.put(DBHelper.CITY_THREE, thirdCity);
         long id = db.insert( DBHelper.TABLE_NAME, null, values ); //returns ID
-        values.put(DBHelper.ID, id);
         Log.d( DEBUG_TAG, "Stored new question with id: " + String.valueOf( id ) );
 
     }

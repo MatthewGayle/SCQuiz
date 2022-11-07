@@ -17,7 +17,7 @@ public class Quiz {
     private long id;
 
 
-    public Quiz(int answerCount, int quizResult, int question1, int question2, int question3, int question4, int question5, int question6) {
+    public Quiz(int answerCount, int quizResult, long question1, long question2, long question3, long question4, long question5, long question6) {
         this.id = -1;
         this.answerCount = answerCount;
         this.question1 = question1;
@@ -66,6 +66,7 @@ public class Quiz {
     public String getDate() {
         return date;
     }
+
     public long getId() {
         return id;
     }

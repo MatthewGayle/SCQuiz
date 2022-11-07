@@ -41,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
         protected List<Questions> doInBackground( Void... params ) {
             questionsData = new QuestionsData(getApplicationContext());
             questionsData.open();
+
+
             List<Questions> questionList = null;
             try {
                 questionsData.readCSVandInsert(getApplicationContext());
