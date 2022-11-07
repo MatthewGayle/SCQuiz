@@ -6,10 +6,12 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,17 +41,23 @@ public class MainActivity extends AppCompatActivity {
         // in the onCreate callback (the job leads review activity is started).
         @Override
         protected List<Questions> doInBackground( Void... params ) {
+            String destPath = getFilesDir().getPath();
+            destPath = destPath.substring(0, destPath.lastIndexOf("/")) + "/databases/SCQuizDatabase";
             questionsData = new QuestionsData(getApplicationContext());
             questionsData.open();
 
 
             List<Questions> questionList = null;
-            try {
-                questionsData.readCSVandInsert(getApplicationContext());
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (CsvValidationException e) {
-                e.printStackTrace();
+            File dbFile = new File(destPath);
+            if (!dbFile.exists()) {
+                Log.d(TAG, "DOESNT EXIST");
+                try {
+                    questionsData.readCSVandInsert(getApplicationContext());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (CsvValidationException e) {
+                    e.printStackTrace();
+                }
             }
 
 
