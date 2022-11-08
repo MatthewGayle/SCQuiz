@@ -1,5 +1,6 @@
 package edu.uga.cs.scquiz;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -92,6 +93,8 @@ public class HomeView extends Fragment {
 
         seeResultsButton.setOnClickListener(event -> {
 
+            Intent intent = new Intent(getContext(),PreviousQuizActivity.class);
+            startActivity(intent);
 
 
         });

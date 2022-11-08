@@ -6,6 +6,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.nfc.Tag;
@@ -61,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
 
+
+
             questionList = questionsData.read();
 
 
@@ -94,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             checkDB = SQLiteDatabase.openDatabase(destPath, null,
                     SQLiteDatabase.OPEN_READONLY);
+
             checkDB.close();
         } catch (SQLiteException e) {
             // database doesn't exist yet.
@@ -162,26 +166,27 @@ public class MainActivity extends AppCompatActivity {
         Fragment fragment = null;
 
         // Create a new fragment based on the used selection in the nav drawer
+        FragmentManager fragmentManager = getSupportFragmentManager();
         switch( menuItem.getItemId() ) {
             case R.id.start_quiz:
                 fragment = new QuizFragment();
+                fragmentManager.beginTransaction().replace( R.id.fragmentContainerView, fragment).commit();
                 break;
             case R.id.quiz_review:
+                Intent intent = new Intent(getApplicationContext(),PreviousQuizActivity.class);
 
-
-                break;
-            case R.id.Home:
-                fragment = new HomeView();
+                startActivity(intent);
 
                 break;
             default:
                 fragment = new HomeView();
+                fragmentManager.beginTransaction().replace( R.id.fragmentContainerView, fragment).commit();
 
         }
 
         // Set up the fragment by replacing any existing fragment in the main activity
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace( R.id.fragmentContainerView, fragment).commit();
+
+
 
         /*
         // this is included here as a possible future modification

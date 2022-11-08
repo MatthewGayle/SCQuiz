@@ -131,7 +131,7 @@ public class QuestionsData {
 
 
         try {
-            InputStream in_s = context.getAssets().open("state_capitals.csv"); //dummy arg for now
+            InputStream in_s = context.getAssets().open("state_capitals.csv");
             CSVReader reader = new CSVReader(new InputStreamReader(in_s));
             String[] nextRow;
             while ((nextRow = reader.readNext()) != null) {

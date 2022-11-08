@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class QuizData {
 
@@ -25,7 +27,8 @@ public class QuizData {
             DBHelper.Q5,
             DBHelper.Q6,
             DBHelper.date,
-            DBHelper.answerCount
+            DBHelper.answerCount,
+            DBHelper.score
     };
 
 
@@ -61,18 +64,133 @@ public class QuizData {
 
     }
 
-    public void updateAnsweredCount(int size) {
+
+
+    public int checkAns(ArrayList<Questions> al, HashMap<Integer, String> hm) {
+        int count = 0;
+
+
+
+
+
+        for (String s : hm.values()) {
+
+
+
+
+                for (Questions q : al) {
+                    if (q.getCapital().equals(s)) {
+                        count++;
+                    }
+                }
+
+
+
+
+        }
+
+
+
+
+
+        return count;
+    }
+
+    public List<Quiz> read() {
+        ArrayList<Quiz> questions = new ArrayList<>();
+        Cursor cursor = null;
+        int columnIndex;
+
+        try {
+            cursor = db.query(DBHelper.QTABLE_NAME, columns,null, null,
+                    null, null, null );
+
+            if( cursor != null && cursor.getCount() > 0 ) {
+
+                while( cursor.moveToNext() ) {
+                    //System.out.println(cursor.getPosition());
+                    //columnIndex = cursor.getColumnIndex(DBHelper.STATE);
+                    //System.out.println(cursor.getString(columnIndex));
+                    columnIndex = cursor.getColumnIndex(DBHelper.QID);
+                    long id = cursor.getLong(columnIndex);
+
+                    columnIndex = cursor.getColumnIndex(DBHelper.Q1);
+                    int q1 = cursor.getInt(columnIndex);
+
+                    columnIndex = cursor.getColumnIndex(DBHelper.Q2);
+                    int q2 = cursor.getInt(columnIndex);
+
+                    columnIndex = cursor.getColumnIndex(DBHelper.Q3);
+                    int q3 = cursor.getInt(columnIndex);
+
+                    columnIndex = cursor.getColumnIndex(DBHelper.Q4);
+                    int q4 = cursor.getInt(columnIndex);
+
+                    columnIndex = cursor.getColumnIndex(DBHelper.Q5);
+                    int q5 = cursor.getInt(columnIndex);
+
+
+                    columnIndex = cursor.getColumnIndex(DBHelper.Q5);
+                    int q6 = cursor.getInt(columnIndex);
+
+                    columnIndex = cursor.getColumnIndex(DBHelper.date);
+                    String date = cursor.getString(columnIndex);
+
+
+                    columnIndex = cursor.getColumnIndex(DBHelper.answerCount);
+                    int ansCount = cursor.getInt(columnIndex);
+
+
+
+                    columnIndex = cursor.getColumnIndex(DBHelper.score);
+                    int score = cursor.getInt(columnIndex);
+
+                    Quiz current = new Quiz(ansCount, score, q1,q2,q3,q4,q5,q6);
+                    current.setId(id);
+
+                    questions.add(current);
+                    Log.d("QUIZDB", "Retrieved question: " + current);
+
+
+
+                }
+
+
+            }
+            if( cursor != null )
+                Log.d( "QUIZDB", "Number of records from DB: " + cursor.getCount() );
+            else
+                Log.d( "QUIZDB", "Number of records from DB: 0" );
+        }
+        catch( Exception e ){
+            Log.d( "QUIZDB", "Exception caught: " + e );
+        }
+        finally{
+            // we should close the cursor
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        // return a list of retrieved questions
+        return questions;
+
+
+
+    }
+
+    public void updateAnsweredCountandScore(int size,ArrayList<Questions> al,HashMap<Integer, String> hm) {
 
 
 
 
         ContentValues contentValues = new ContentValues();
+        contentValues.put(DBHelper.score, checkAns( al, hm));
         contentValues.put(DBHelper.answerCount, size);
 
         long latestQuizId = 0;
         if (size > 0) {
             latestQuizId = quizQuestionList.get(quizQuestionList.size()-1).getId();
-            System.out.println(latestQuizId);
+
             db.update(DBHelper.QTABLE_NAME, contentValues,"Id=" + latestQuizId,null);
 
             Cursor cursor;
@@ -94,9 +212,10 @@ public class QuizData {
                         columnIndex = cursor.getColumnIndex(DBHelper.answerCount);
                         int ansCount = cursor.getInt(columnIndex);
 
-                        System.out.println("RowId: " + rowId);
-                        System.out.println("q1Id: " + q1Id);
-                        System.out.println("ansCount: " + ansCount);
+                        columnIndex = cursor.getColumnIndex(DBHelper.score);
+                        int score = cursor.getInt(columnIndex);
+
+                        System.out.println("score: " + score);
 
 
                     }

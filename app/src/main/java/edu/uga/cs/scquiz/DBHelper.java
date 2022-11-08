@@ -11,7 +11,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     private static final String DB_NAME = "SCQuizDatabase";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 8;
 
     // for questions table
     public static final String TABLE_NAME= "Questions";
@@ -32,7 +32,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String Q6 = "question6";
     public static final String answerCount = "answercount";
     public static final String date = "date";
-    public static final String score = "score";
+    public static final String score = "Score";
 
 
     private static DBHelper helperInstance;
@@ -55,10 +55,10 @@ public class DBHelper extends SQLiteOpenHelper {
                     + Q4 + " INTEGER, "
                     + Q5 + " INTEGER, "
                     + Q6 + " INTEGER, "
-                    + date + " TEXT , "
-                    + answerCount + " INTEGER,"
-                    + score + "INTEGER,"
-                    + " FOREIGN KEY(question1, question2, question3, question4, question5, question6) " +
+                    + date + " TEXT, "
+                    + answerCount + " INTEGER, "
+                    + score + " INTEGER, "
+                    + "FOREIGN KEY(question1, question2, question3, question4, question5, question6) " +
                     "REFERENCES Questions(Id, Id, Id, Id, Id, Id)"
                     + ")";
 

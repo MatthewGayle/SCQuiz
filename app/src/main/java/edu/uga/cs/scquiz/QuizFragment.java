@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
@@ -112,12 +113,18 @@ public class QuizFragment extends Fragment {
                     contentValues.put(DBHelper.date, Quiz.getcurrentDate());
 
                     Intent intent = new Intent(getActivity(),QuizResultActivity.class);
+
                     startActivity(intent);
+
+                    FragmentManager fragmentManager = getParentFragmentManager();
+                    fragmentManager.popBackStack();
+
+
                 }
 
 
 
-                quizData.updateAnsweredCount(answersPicked.size());
+                quizData.updateAnsweredCountandScore(answersPicked.size(),sixQuestions,answersPicked);
                 System.out.println(QuizView.check(QuizView.answerChosen, QuizView.answerCorrect));
 
 
