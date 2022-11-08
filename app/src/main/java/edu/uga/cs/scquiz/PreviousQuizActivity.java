@@ -14,15 +14,17 @@ import com.opencsv.exceptions.CsvValidationException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class PreviousQuizActivity extends AppCompatActivity {
 
 
     private QuizData quizData = null;
-    private static List<Quiz> quizList;
+    public static List<Quiz> quizList;
     private RecyclerView recyclerView;
     private RecycleAdapter recyclerAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +42,7 @@ public class PreviousQuizActivity extends AppCompatActivity {
         new QuizDBReader().execute();
 
         recyclerView = findViewById( R.id.recyclerView );
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager( getApplicationContext() );
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager( this );
         recyclerView.setLayoutManager( layoutManager );
 
 
@@ -67,7 +69,7 @@ public class PreviousQuizActivity extends AppCompatActivity {
 
 
             Log.d( "QUIZZESFETCHED", "QuizDBReader: quizzes retrieved: " + quizList.size() );
-            recyclerAdapter = new RecycleAdapter( getApplicationContext(), quizList );
+            recyclerAdapter = new RecycleAdapter( getBaseContext(), quizList );
             recyclerView.setAdapter( recyclerAdapter );
 
             return quizList;
@@ -84,6 +86,9 @@ public class PreviousQuizActivity extends AppCompatActivity {
             ;
             quizList.addAll( qList );
 
+            for (Quiz quiz : quizList) {
+                System.out.println(quiz.getDate());
+            }
 
             Log.d( "QUIZLIST", "QuestionsDBReader: qList.size(): " + quizList.size());
 
