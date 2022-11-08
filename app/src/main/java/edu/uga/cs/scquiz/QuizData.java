@@ -94,11 +94,9 @@ public class QuizData {
 
 
 
-
-
         return ((count / al.size()) * 100);
-    }
 
+    }
 
     public List<Quiz> read() {
         ArrayList<Quiz> questions = new ArrayList<>();
