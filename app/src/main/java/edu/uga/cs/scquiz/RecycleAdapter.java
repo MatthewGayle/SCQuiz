@@ -14,6 +14,7 @@ import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,13 +78,16 @@ public class RecycleAdapter
     @Override
     public void onBindViewHolder( PastQuizHolder holder, int position ) {
 
-        Quiz quiz= values.get( position );
+        Quiz quiz = values.get( position );
+        System.out.println(quiz.getQuestion1());
 
         Log.d( DEBUG_TAG, "onBindViewHolder: " + quiz );
 
         holder.quizName.setText("Quiz " + position);
         holder.dateText.setText( quiz.getDate() );
-        holder.scoreText.setText( String.valueOf(quiz.getQuizResult()) );
+        DecimalFormat decimalFormat = new DecimalFormat();
+        decimalFormat.setMaximumFractionDigits(2);
+        holder.scoreText.setText( decimalFormat.format(quiz.getQuizResult()) + "%" );
         holder.seeQuizButton.setText( "See quiz" );
     }
 

@@ -2,11 +2,13 @@ package edu.uga.cs.scquiz;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class Quiz {
     private int answerCount;
-    private int quizResult;
+    private double quizResult;
     private long question1;
     private long question2;
     private long question3;
@@ -17,7 +19,7 @@ public class Quiz {
     private long id;
 
 
-    public Quiz(int answerCount, int quizResult, long question1, long question2, long question3, long question4, long question5, long question6) {
+    public Quiz(int answerCount, double quizResult, long question1, long question2, long question3, long question4, long question5, long question6) {
         this.id = -1;
         this.answerCount = answerCount;
         this.question1 = question1;
@@ -26,16 +28,20 @@ public class Quiz {
         this.question4 = question4;
         this.question5 = question5;
         this.question6 = question6;
-        Date date = new Date();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        this.date = dateFormat.format(date);
+        this.quizResult = quizResult;
+//        Date date = new Date();
+//        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+//        this.date = dateFormat.format(date);
 
+    }
+    public void setDate(String date) {
+        this.date = date;
     }
     public int getAnswerCount() {
         return answerCount;
     }
 
-    public int getQuizResult() {
+    public double getQuizResult() {
         return quizResult;
     }
 
@@ -76,8 +82,13 @@ public class Quiz {
     }
 
     public static String getcurrentDate() {
-        Date date = new Date();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        return dateFormat.format(date);
+        SimpleDateFormat etDf = new SimpleDateFormat("MM/dd/yyyy 'at' hh:mm:ssa 'ET'");
+        TimeZone etTimeZone = TimeZone.getTimeZone("America/New_York");
+        etDf.setTimeZone( etTimeZone );
+
+        Date currentDate = new Date();
+
+
+        return etDf.format(currentDate.getTime());
     }
 }
