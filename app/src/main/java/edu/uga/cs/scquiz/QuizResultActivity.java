@@ -6,10 +6,21 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.TextView;
+
+import java.text.DecimalFormat;
 
 public class QuizResultActivity extends AppCompatActivity {
+
+
+    Bundle bundle;
+    Button button;
+    TextView showResult;
+    TextView dateText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +32,41 @@ public class QuizResultActivity extends AppCompatActivity {
         if (actionBar != null)
             actionBar.setDisplayHomeAsUpEnabled(true);
 
+
+        bundle = getIntent().getExtras().getBundle("Bundle");
+        setScore(bundle.getDouble("Score"));
+        setDate(bundle.getString("Date"));
+        buttonAction();
+
     }
+
+
+    public void setScore(double score) {
+        showResult = findViewById(R.id.resMes);
+        DecimalFormat decimalFormat = new DecimalFormat();
+        decimalFormat.setMaximumFractionDigits(2);
+        showResult.setText("You made a " + decimalFormat.format(score)+"%!");
+    }
+
+    public void setDate(String date) {
+        showResult = findViewById(R.id.finishDateText);
+        showResult.setText(date);
+    }
+
+    public void buttonAction() {
+        button = findViewById(R.id.pastQuiz);
+
+        button.setOnClickListener(event->{
+
+            Intent intent = new Intent(getApplicationContext(),PreviousQuizActivity.class);
+
+            startActivity(intent);
+
+
+        });
+
+    }
+
 
 
     /**

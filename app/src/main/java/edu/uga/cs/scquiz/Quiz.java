@@ -45,6 +45,10 @@ public class Quiz {
         return quizResult;
     }
 
+    public void setQuizResult(Double quizResult) {
+        this.quizResult = quizResult;
+    }
+
     public long getQuestion1() {
         return question1;
     }

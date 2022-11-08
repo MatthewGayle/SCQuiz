@@ -63,6 +63,10 @@ public class QuizData {
 
     }
 
+    public Quiz getQuiz() {
+        return quiz;
+    }
+
 
 
     public double checkAns(ArrayList<Questions> al, HashMap<Integer, String> hm) {
@@ -194,10 +198,11 @@ public class QuizData {
 
 
 
-
+        double scoreCur = checkAns( al, hm);
         ContentValues contentValues = new ContentValues();
-        contentValues.put(DBHelper.score, checkAns( al, hm));
+        contentValues.put(DBHelper.score, scoreCur);
         contentValues.put(DBHelper.answerCount, size);
+        quiz.setQuizResult(scoreCur);
 
         long latestQuizId = 0;
         if (size > 0) {
