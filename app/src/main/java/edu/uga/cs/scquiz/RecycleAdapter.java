@@ -9,10 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -25,7 +22,7 @@ import java.util.List;
 public class RecycleAdapter
         extends RecyclerView.Adapter<RecycleAdapter.PastQuizHolder> {
 
-    public static final String DEBUG_TAG = "JobLeadRecyclerAdapter";
+    public static final String DEBUG_TAG = "QUIZRecyclerAdapter";
 
     private final Context context;
 
@@ -56,7 +53,7 @@ public class RecycleAdapter
             super( itemView );
 
             quizName = itemView.findViewById( R.id.quizText );
-            dateText = itemView.findViewById( R.id.dateText );
+            dateText = itemView.findViewById( R.id.finishDateText);
             scoreText = itemView.findViewById( R.id.scoreText );
             seeQuizButton = itemView.findViewById( R.id.button );
         }

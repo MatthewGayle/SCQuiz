@@ -103,28 +103,37 @@ public class QuizFragment extends Fragment {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+
+
+                quizData.updateAnsweredCountandScore(answersPicked.size(),sixQuestions,answersPicked);
+                System.out.println(QuizView.check(QuizView.answerChosen, QuizView.answerCorrect));
+
+
                 if (answersPicked.size() != 6 && position == 6) {
                     pager.setCurrentItem(5, false);
 
                 }
 
+
+
                 if (answersPicked.size() == 6 && position == 5 ) {
                     quizData.updateDate();
 
                     Intent intent = new Intent(getActivity(),QuizResultActivity.class);
-
+                    Bundle bundle = new Bundle();
+                    bundle.putDouble("Score",quizData.getQuiz().getQuizResult());
+                    bundle.putString("Date",quizData.getQuiz().getDate());
+                    intent.putExtra("Bundle", bundle);
                     startActivity(intent);
 
                     FragmentManager fragmentManager = getParentFragmentManager();
-                    fragmentManager.popBackStack();
+                    fragmentManager.beginTransaction().replace( R.id.fragmentContainerView, new HomeView()).commit();
 
 
                 }
 
 
 
-                quizData.updateAnsweredCountandScore(answersPicked.size(),sixQuestions,answersPicked);
-                System.out.println(QuizView.check(QuizView.answerChosen, QuizView.answerCorrect));
 
 
             }
