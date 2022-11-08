@@ -1,5 +1,6 @@
 package edu.uga.cs.scquiz;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -107,6 +108,8 @@ public class QuizFragment extends Fragment {
                 }
 
                 if (answersPicked.size() == 6 && position == 5 ) {
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put(DBHelper.date, Quiz.getcurrentDate());
 
                     Intent intent = new Intent(getActivity(),QuizResultActivity.class);
                     startActivity(intent);

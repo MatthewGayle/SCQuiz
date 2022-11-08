@@ -32,6 +32,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String Q6 = "question6";
     public static final String answerCount = "answercount";
     public static final String date = "date";
+    public static final String score = "score";
 
 
     private static DBHelper helperInstance;
@@ -56,6 +57,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     + Q6 + " INTEGER, "
                     + date + " TEXT , "
                     + answerCount + " INTEGER,"
+                    + score + "INTEGER,"
                     + " FOREIGN KEY(question1, question2, question3, question4, question5, question6) " +
                     "REFERENCES Questions(Id, Id, Id, Id, Id, Id)"
                     + ")";

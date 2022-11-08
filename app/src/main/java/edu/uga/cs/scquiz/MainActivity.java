@@ -6,6 +6,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "QuizActivity";
     private QuestionsData questionsData = null;
     private static List<Questions> questionList;
+    private boolean databaseCreated = true;
 
 
 
@@ -41,15 +44,12 @@ public class MainActivity extends AppCompatActivity {
         // in the onCreate callback (the job leads review activity is started).
         @Override
         protected List<Questions> doInBackground( Void... params ) {
-            String destPath = getFilesDir().getPath();
-            destPath = destPath.substring(0, destPath.lastIndexOf("/")) + "/databases/SCQuizDatabase";
+
             questionsData = new QuestionsData(getApplicationContext());
             questionsData.open();
 
-
             List<Questions> questionList = null;
-            File dbFile = new File(destPath);
-            if (!dbFile.exists()) {
+            if (!databaseCreated) {
                 Log.d(TAG, "DOESNT EXIST");
                 try {
                     questionsData.readCSVandInsert(getApplicationContext());
@@ -87,14 +87,26 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+    private boolean checkDataBase() {
+        String destPath = getFilesDir().getPath();
+        destPath = destPath.substring(0, destPath.lastIndexOf("/")) + "/databases/SCQuizDatabase";
+        SQLiteDatabase checkDB = null;
+        try {
+            checkDB = SQLiteDatabase.openDatabase(destPath, null,
+                    SQLiteDatabase.OPEN_READONLY);
+            checkDB.close();
+        } catch (SQLiteException e) {
+            // database doesn't exist yet.
+        }
+        return checkDB != null;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
+        databaseCreated = checkDataBase();
 
         questionList = new ArrayList<Questions>();
 

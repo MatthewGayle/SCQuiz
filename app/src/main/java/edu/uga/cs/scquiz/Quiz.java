@@ -75,4 +75,9 @@ public class Quiz {
         this.id = id;
     }
 
+    public static String getcurrentDate() {
+        Date date = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        return dateFormat.format(date);
+    }
 }
