@@ -66,8 +66,8 @@ public class QuizData {
 
 
 
-    public int checkAns(ArrayList<Questions> al, HashMap<Integer, String> hm) {
-        int count = 0;
+    public double checkAns(ArrayList<Questions> al, HashMap<Integer, String> hm) {
+        double count = 0;
 
 
 
@@ -88,12 +88,9 @@ public class QuizData {
 
 
         }
-
-
-
-
-
-        return count;
+        count = (count/6) * 100;
+            Log.d("TAG", "THIS IS THE SCORE FROM QUIZ DATA" + count );
+            return count;
     }
 
     public List<Quiz> read() {
