@@ -109,7 +109,8 @@ public class QuizFragment extends Fragment {
                 }
 
                 if (answersPicked.size() == 6 && position == 5 ) {
-                    quizData.updateDate();
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put(DBHelper.date, Quiz.getcurrentDate());
 
                     Intent intent = new Intent(getActivity(),QuizResultActivity.class);
 
