@@ -110,8 +110,15 @@ public class QuizFragment extends Fragment {
                 }
 
 
+<<<<<<< HEAD
                 if (answersPicked.size() == 6 && position == 5) {
                     quizData.updateDate();
+=======
+
+                if (answersPicked.size() == 6 && position == 5 ) {
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put(DBHelper.date, Quiz.getcurrentDate());
+>>>>>>> 9cc4fcd69088024c5337d5b9543aafbd6f81bd00
 
                     Intent intent = new Intent(getActivity(), QuizResultActivity.class);
                     Bundle bundle = new Bundle();
