@@ -29,17 +29,12 @@ public class RecycleAdapter
     private List<Quiz> values;
     private List<Quiz> originalValues;
 
-    public RecycleAdapter( Context context, List<Quiz> quizList ) {
+    public RecycleAdapter(Context context, List<Quiz> quizList) {
         this.context = context;
         this.values = quizList;
-        this.originalValues = new ArrayList<Quiz>( quizList );
+        this.originalValues = new ArrayList<Quiz>(quizList);
     }
 
-    // reset the originalValues to the current contents of values
-    public void sync()
-    {
-        originalValues = new ArrayList<Quiz>( values );
-    }
 
     // The adapter must have a ViewHolder class to "hold" one item to show.
     public static class PastQuizHolder extends RecyclerView.ViewHolder {
@@ -49,48 +44,48 @@ public class RecycleAdapter
         TextView scoreText;
         Button seeQuizButton;
 
-        public PastQuizHolder( View itemView ) {
-            super( itemView );
+        public PastQuizHolder(View itemView) {
+            super(itemView);
 
-            quizName = itemView.findViewById( R.id.quizText );
-            dateText = itemView.findViewById( R.id.finishDateText);
-            scoreText = itemView.findViewById( R.id.scoreText );
-            seeQuizButton = itemView.findViewById( R.id.button );
+            quizName = itemView.findViewById(R.id.quizText);
+            dateText = itemView.findViewById(R.id.finishDateText);
+            scoreText = itemView.findViewById(R.id.scoreText);
+            seeQuizButton = itemView.findViewById(R.id.button);
         }
     }
 
     @NonNull
     @Override
-    public PastQuizHolder onCreateViewHolder( ViewGroup parent, int viewType ) {
+    public PastQuizHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // We need to make sure that all CardViews have the same, full width, allowed by the parent view.
         // This is a bit tricky, and we must provide the parent reference (the second param of inflate)
         // and false as the third parameter (don't attach to root).
         // Consequently, the parent view's (the RecyclerView) width will be used (match_parent).
-        View view = LayoutInflater.from( parent.getContext()).inflate(R.layout.past_quiz_view, parent, false );
-        return new PastQuizHolder( view );
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.past_quiz_view, parent, false);
+        return new PastQuizHolder(view);
     }
 
     // This method fills in the values of a holder to show a JobLead.
     // The position parameter indicates the position on the list of jobs list.
     @Override
-    public void onBindViewHolder( PastQuizHolder holder, int position ) {
+    public void onBindViewHolder(PastQuizHolder holder, int position) {
 
-        Quiz quiz = values.get( position );
+        Quiz quiz = values.get(position);
         System.out.println(quiz.getQuestion1());
 
-        Log.d( DEBUG_TAG, "onBindViewHolder: " + quiz );
+        Log.d(DEBUG_TAG, "onBindViewHolder: " + quiz);
 
         holder.quizName.setText("Quiz " + position);
-        holder.dateText.setText( quiz.getDate() );
+        holder.dateText.setText(quiz.getDate());
         DecimalFormat decimalFormat = new DecimalFormat();
         decimalFormat.setMaximumFractionDigits(2);
-        holder.scoreText.setText( decimalFormat.format(quiz.getQuizResult()) + "%" );
-        holder.seeQuizButton.setText( "See quiz" );
+        holder.scoreText.setText(decimalFormat.format(quiz.getQuizResult()) + "%");
+        holder.seeQuizButton.setText("See quiz");
     }
 
     @Override
     public int getItemCount() {
-        if( values != null )
+        if (values != null)
             return values.size();
         else
             return 0;

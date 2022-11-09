@@ -18,7 +18,7 @@ public class QuizData {
 
 
     private Quiz quiz;
-    private static final String[] columns =  {
+    private static final String[] columns = {
             DBHelper.QID,
             DBHelper.Q1,
             DBHelper.Q2,
@@ -32,8 +32,8 @@ public class QuizData {
     };
 
 
-    public QuizData( Context context ) {
-        this.dbHelper = DBHelper.getInstance( context );
+    public QuizData(Context context) {
+        this.dbHelper = DBHelper.getInstance(context);
     }
 
     public void open() {
@@ -41,24 +41,26 @@ public class QuizData {
 
     }
 
+    /**
+     * Inserts information into the Quiz table
+     */
     public void insert() {
 
 
-            ArrayList<Questions> al = QuizFragment.sixQuestions;
+        ArrayList<Questions> al = QuizFragment.sixQuestions;
 
 
-            ContentValues values = new ContentValues();
-            values.put( DBHelper.Q1,al.get(0).getId());
-            values.put( DBHelper.Q2,al.get(1).getId());
-            values.put( DBHelper.Q3,al.get(2).getId());
-            values.put( DBHelper.Q4,al.get(3).getId());
-            values.put( DBHelper.Q5,al.get(4).getId());
-            values.put( DBHelper.Q6,al.get(5).getId());
-            long id = db.insert( DBHelper.QTABLE_NAME, null, values ); //returns ID
-            quiz = new Quiz(0, 0, al.get(0).getId(), al.get(1).getId(), al.get(2).getId(), al.get(3).getId(), al.get(4).getId(), al.get(5).getId());
-            quiz.setId(id);
-            Log.d( "QUIZTABLEINSERTION", "Stored new quiz with id: " + String.valueOf( id ) );
-
+        ContentValues values = new ContentValues();
+        values.put(DBHelper.Q1, al.get(0).getId());
+        values.put(DBHelper.Q2, al.get(1).getId());
+        values.put(DBHelper.Q3, al.get(2).getId());
+        values.put(DBHelper.Q4, al.get(3).getId());
+        values.put(DBHelper.Q5, al.get(4).getId());
+        values.put(DBHelper.Q6, al.get(5).getId());
+        long id = db.insert(DBHelper.QTABLE_NAME, null, values); //returns ID
+        quiz = new Quiz(0, 0, al.get(0).getId(), al.get(1).getId(), al.get(2).getId(), al.get(3).getId(), al.get(4).getId(), al.get(5).getId());
+        quiz.setId(id);
+        Log.d("QUIZTABLEINSERTION", "Stored new quiz with id: " + String.valueOf(id));
 
 
     }
@@ -68,51 +70,51 @@ public class QuizData {
     }
 
 
+    /**
+     * Checks if values of hashmap equal the value of capital in a object of Questions
+     *
+     * @param al - al that contains the six randomly chosen questions
+     * @param hm - contains what the user has selected
+     * @return score
+     */
 
     public double checkAns(ArrayList<Questions> al, HashMap<Integer, String> hm) {
         double count = 0;
 
-
-
-
-
         for (String s : hm.values()) {
 
-
-
-
-                for (Questions q : al) {
-                    if (q.getCapital().equals(s)) {
-                        count++;
-                    }
+            for (Questions q : al) {
+                if (q.getCapital().equals(s)) {
+                    count++;
                 }
-
-
+            }
 
 
         }
-
 
 
         return ((count / al.size()) * 100);
 
     }
 
+    /**
+     * Reads from Quiz table and appends entries to the ArrayList<Quiz> questions
+     *
+     * @return ArrayList<Quiz> questions
+     */
     public List<Quiz> read() {
         ArrayList<Quiz> questions = new ArrayList<>();
         Cursor cursor = null;
         int columnIndex;
 
         try {
-            cursor = db.query(DBHelper.QTABLE_NAME, columns,null, null,
-                    null, null, null );
+            cursor = db.query(DBHelper.QTABLE_NAME, columns, null, null,
+                    null, null, null);
 
-            if( cursor != null && cursor.getCount() > 0 ) {
+            if (cursor != null && cursor.getCount() > 0) {
 
-                while( cursor.moveToNext() ) {
-                    //System.out.println(cursor.getPosition());
-                    //columnIndex = cursor.getColumnIndex(DBHelper.STATE);
-                    //System.out.println(cursor.getString(columnIndex));
+                while (cursor.moveToNext()) {
+
                     columnIndex = cursor.getColumnIndex(DBHelper.QID);
                     long id = cursor.getLong(columnIndex);
 
@@ -143,13 +145,11 @@ public class QuizData {
                     int ansCount = cursor.getInt(columnIndex);
 
 
-
                     columnIndex = cursor.getColumnIndex(DBHelper.score);
                     double score = cursor.getDouble(columnIndex);
 
 
-
-                    Quiz current = new Quiz(ansCount, score, q1,q2,q3,q4,q5,q6);
+                    Quiz current = new Quiz(ansCount, score, q1, q2, q3, q4, q5, q6);
                     current.setId(id);
                     current.setDate(date);
 
@@ -157,20 +157,17 @@ public class QuizData {
                     Log.d("QUIZDB", "Retrieved question: " + current);
 
 
-
                 }
 
 
             }
-            if( cursor != null )
-                Log.d( "QUIZDB", "Number of records from DB: " + cursor.getCount() );
+            if (cursor != null)
+                Log.d("QUIZDB", "Number of records from DB: " + cursor.getCount());
             else
-                Log.d( "QUIZDB", "Number of records from DB: 0" );
-        }
-        catch( Exception e ){
-            Log.d( "QUIZDB", "Exception caught: " + e );
-        }
-        finally{
+                Log.d("QUIZDB", "Number of records from DB: 0");
+        } catch (Exception e) {
+            Log.d("QUIZDB", "Exception caught: " + e);
+        } finally {
             // we should close the cursor
             if (cursor != null) {
                 cursor.close();
@@ -180,25 +177,33 @@ public class QuizData {
         return questions;
 
 
-
     }
 
+
+    /**
+     * Updates the value at the Date column in the Quiz table at the appropriate row.
+     */
 
     public void updateDate() {
         long latestQuizId = quiz.getId();
         quiz.setDate(Quiz.getcurrentDate());
         ContentValues contentValues = new ContentValues();
-        contentValues.put(DBHelper.date,quiz.getDate());
-        db.update(DBHelper.QTABLE_NAME, contentValues,"Id=" + latestQuizId,null);
-
-
+        contentValues.put(DBHelper.date, quiz.getDate());
+        db.update(DBHelper.QTABLE_NAME, contentValues, "Id=" + latestQuizId, null);
     }
 
-    public void updateAnsweredCountandScore(int size,ArrayList<Questions> al,HashMap<Integer, String> hm) {
+
+    /**
+     * Updates the value of the answercount and the score column
+     *
+     * @param size
+     * @param al
+     * @param hm
+     */
+    public void updateAnsweredCountandScore(int size, ArrayList<Questions> al, HashMap<Integer, String> hm) {
 
 
-
-        double scoreCur = checkAns( al, hm);
+        double scoreCur = checkAns(al, hm);
         ContentValues contentValues = new ContentValues();
         contentValues.put(DBHelper.score, scoreCur);
         contentValues.put(DBHelper.answerCount, size);
@@ -209,49 +214,12 @@ public class QuizData {
 
             latestQuizId = quiz.getId();
 
-            db.update(DBHelper.QTABLE_NAME, contentValues,"Id=" + latestQuizId,null);
-
-            Cursor cursor;
-            int columnIndex = 0;
-
-            try {
-                cursor = db.query(DBHelper.QTABLE_NAME, columns,null,null,null,null, null);
-
-                if (cursor != null&& cursor.getCount() > 0 ) {
-
-                    while( cursor.moveToNext() ) {
-
-                        columnIndex = cursor.getColumnIndex(DBHelper.ID);
-                        int rowId = cursor.getInt(columnIndex);
-
-                        columnIndex = cursor.getColumnIndex(DBHelper.Q1);
-                        int q1Id = cursor.getInt(columnIndex);
-
-                        columnIndex = cursor.getColumnIndex(DBHelper.answerCount);
-                        int ansCount = cursor.getInt(columnIndex);
-
-                        columnIndex = cursor.getColumnIndex(DBHelper.score);
-                        int score = cursor.getInt(columnIndex);
-
-                        System.out.println("score: " + score);
-                        columnIndex = cursor.getColumnIndex(DBHelper.date);
-                        String date = cursor.getString(columnIndex);
-                        System.out.println("date: " + date);
+            db.update(DBHelper.QTABLE_NAME, contentValues, "Id=" + latestQuizId, null);
 
 
-                    }
-                    }
-
-            } catch (Exception e){
-
-            }
 
 
         }
-
-
-
-
 
 
     }

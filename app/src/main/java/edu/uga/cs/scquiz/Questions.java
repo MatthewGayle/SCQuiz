@@ -10,6 +10,14 @@ public class Questions {
     private long id;
 
 
+    /**
+     * Question entity
+     *
+     * @param state      - state
+     * @param capital    - capital of state
+     * @param secondCity - a city in the state
+     * @param thirdCity  - another city in the state
+     */
     public Questions(String state, String capital, String secondCity, String thirdCity) {
         this.id = -1;
         this.state = state;
@@ -23,7 +31,7 @@ public class Questions {
     }
 
     public void setId(long id) {
-        this.id= id;
+        this.id = id;
     }
 
     public String getState() {
@@ -41,7 +49,6 @@ public class Questions {
     public String getThirdCity() {
         return thirdCity;
     }
-
 
 
 }

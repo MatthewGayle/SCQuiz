@@ -56,17 +56,27 @@ public class HomeView extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState ) {
-        super.onViewCreated(view,savedInstanceState);
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         setText();
         setButtons();
     }
 
+    /**
+     * Reads from the .txt under the raw directory
+     * and sets the text of the associated text view
+     */
     private void setText() {
         tv = getView().findViewById(R.id.quizDescription);
         tv.setText(readTxt(getResources().openRawResource(R.raw.appinfo)));
     }
 
+    /**
+     * Reads the .txt
+     *
+     * @param in_s - .txt to read
+     * @return String presentation of what was read
+     */
     public static String readTxt(InputStream in_s) {
         String text = "";
         byte[] b;
@@ -80,6 +90,10 @@ public class HomeView extends Fragment {
         return text;
     }
 
+    /**
+     * Initializes the buttons to reference its views.
+     * Adds listeners to the button; and upon trigger, a fragment is created.
+     */
     private void setButtons() {
 
         startQuizButton = getView().findViewById(R.id.quizButton);
@@ -88,18 +102,16 @@ public class HomeView extends Fragment {
 
         startQuizButton.setOnClickListener(event -> {
             Fragment fragment = new QuizFragment();
-            fragmentManager.beginTransaction().replace( R.id.fragmentContainerView, fragment).addToBackStack("main screen" ).commit();
+            fragmentManager.beginTransaction().replace(R.id.fragmentContainerView, fragment).addToBackStack("main screen").commit();
         });
 
         seeResultsButton.setOnClickListener(event -> {
 
-            Intent intent = new Intent(getContext(),PreviousQuizActivity.class);
+            Intent intent = new Intent(getContext(), PreviousQuizActivity.class);
             startActivity(intent);
 
 
         });
-
-
 
 
     }

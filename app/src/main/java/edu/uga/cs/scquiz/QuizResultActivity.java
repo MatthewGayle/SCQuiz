@@ -40,25 +40,39 @@ public class QuizResultActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Set the text view to convey the score
+     *
+     * @param score
+     */
 
     public void setScore(double score) {
         showResult = findViewById(R.id.resMes);
         DecimalFormat decimalFormat = new DecimalFormat();
         decimalFormat.setMaximumFractionDigits(2);
-        showResult.setText("You made a " + decimalFormat.format(score)+"%!");
+        showResult.setText("You made a " + decimalFormat.format(score) + "%!");
     }
 
+    /**
+     * Set the text view to convey the date
+     *
+     * @param date
+     */
     public void setDate(String date) {
         showResult = findViewById(R.id.finishDateText);
         showResult.setText(date);
     }
 
+    /**
+     * Initializes the locally declared Button object to referenced its view.
+     * Adds a listener to the button. If triggered, the PreviousQuizActivity is prompted.
+     */
     public void buttonAction() {
         button = findViewById(R.id.pastQuiz);
 
-        button.setOnClickListener(event->{
+        button.setOnClickListener(event -> {
 
-            Intent intent = new Intent(getApplicationContext(),PreviousQuizActivity.class);
+            Intent intent = new Intent(getApplicationContext(), PreviousQuizActivity.class);
 
             startActivity(intent);
 
@@ -66,7 +80,6 @@ public class QuizResultActivity extends AppCompatActivity {
         });
 
     }
-
 
 
     /**
@@ -81,7 +94,6 @@ public class QuizResultActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == android.R.id.home) {
             onBackPressed();
-
 
 
             return true;

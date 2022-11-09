@@ -31,7 +31,7 @@ public class QuizView extends Fragment {
 
     private static final String TAG = "QuizFragment";
     private static int questionNum;
-    private  ArrayList<Questions> sixQuestions = QuizFragment.getSixQuestions();
+    private ArrayList<Questions> sixQuestions = QuizFragment.getSixQuestions();
     // variable that will be replaced with automatically generated quiz questions.
     private static final String[] sampleQuestions = {
             "Question 1",
@@ -43,7 +43,7 @@ public class QuizView extends Fragment {
     };
 
 
-    public static int  length = sampleQuestions.length;
+    public static int length = sampleQuestions.length;
 
     private RadioButton rb1;
     private RadioButton rb2;
@@ -53,75 +53,81 @@ public class QuizView extends Fragment {
     public static String answerCorrect = "";
 
 
-
-
     public QuizView() {
         // Required empty public constructor
 
     }
 
-    public static QuizView newInstance( int questionNum) {
+    public static QuizView newInstance(int questionNum) {
         QuizView fragment = new QuizView();
         Bundle args = new Bundle();
 
-        args.putInt( "questionNum", questionNum );
-        fragment.setArguments( args );
+        args.putInt("questionNum", questionNum);
+        fragment.setArguments(args);
 
         return fragment;
     }
+
     @Override
-    public void onCreate( Bundle savedInstanceState ) {
-        super.onCreate( savedInstanceState );
-        if( getArguments() != null ) {
-            questionNum = getArguments().getInt( "questionNum" );
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            questionNum = getArguments().getInt("questionNum");
+            System.out.println("QUESTIONNUM---> " + questionNum);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState ) {
+                             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        int layoutID =  R.layout.fragment_quiz_view;
+        int layoutID = R.layout.fragment_quiz_view;
         if (questionNum == 6) {
-            layoutID =  R.layout.fragment_quiz_result;
+            layoutID = R.layout.fragment_quiz_result;
         }
 
 
-
-        return inflater.inflate( layoutID, container, false );
+        return inflater.inflate(layoutID, container, false);
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState ) {
-        super.onViewCreated( view, savedInstanceState );
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
 
-           prepareQuestion(view);
-           checkSelection(view);
+        prepareQuestion(view);
+        checkSelection(view);
 
 
     }
 
-    public static boolean check(String answer, String chosen) {
 
-        return answer.equals(chosen);
-    }
-
-
+    /**
+     * Initializes a RadioGroup object to refer to its view.
+     * Adds a lister to the group. Once triggered, the contents of
+     * QuizFragment's answersPicked is updated.
+     *
+     * @param view
+     */
     public void checkSelection(View view) {
         RadioGroup rg = (RadioGroup) view.findViewById(R.id.radioGroup);
 
-        rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
-        {
+        rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 RadioButton rd = view.findViewById(checkedId);
-                QuizFragment.answersPicked.put(getArguments().getInt( "questionNum" ), rd.getText().toString());
+                QuizFragment.answersPicked.put(getArguments().getInt("questionNum"), rd.getText().toString());
                 answerChosen = rd.getText().toString();
 
             }
         });
     }
+
+    /**
+     * Initializes text views and radio buttons to reflect the necessary information.
+     *
+     * @param view
+     */
 
     public void prepareQuestion(View view) {
         TextView questionNumberView = view.findViewById(R.id.questionNumText);
@@ -138,20 +144,20 @@ public class QuizView extends Fragment {
         rb3.setText(answerChoices.get(2));
         answerCorrect = sixQuestions.get(questionNum).getCapital();
 
-        questionNumberView.setText( sampleQuestions[ questionNum ] );
+        questionNumberView.setText(sampleQuestions[questionNum]);
 
-        TextView questionView = view.findViewById( R.id.qText );
+        TextView questionView = view.findViewById(R.id.qText);
         questionView.setText("What is the capital of " + sixQuestions.get(questionNum).getState() + "?");
     }
+
+    /**
+     * @return length which stores length of sampleQuestions
+     */
     public static int getNumberOfVersions() {
 
-          return    length ;
+        return length;
 
     }
-
-
-
-
 
 
 }

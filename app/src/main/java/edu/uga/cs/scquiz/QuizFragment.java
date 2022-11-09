@@ -26,18 +26,16 @@ public class QuizFragment extends Fragment {
 
     private QuizData quizData;
     public static ArrayList<Questions> sixQuestions;
-    public static HashMap<Integer,String> answersPicked;
+    public static HashMap<Integer, String> answersPicked;
 
     /**
-     *  int count = 0;
-     *  for element, index in sixQuestions:
-     *   if (sixQuestions.get(index) == answersPicked.get(index) {
-     *       count++;
-     *   }
-     *
-     *   finalres = count / sixQuestion.size() or 6
-     *
-     *
+     * int count = 0;
+     * for element, index in sixQuestions:
+     * if (sixQuestions.get(index) == answersPicked.get(index) {
+     * count++;
+     * }
+     * <p>
+     * finalres = count / sixQuestion.size() or 6
      */
     public QuizFragment() {
         // Required empty public constructor
@@ -82,20 +80,18 @@ public class QuizFragment extends Fragment {
 
 
     @Override
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState ) {
-        super.onViewCreated( view, savedInstanceState );
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
 
-
-        ViewPager2 pager = getView().findViewById( R.id.viewpager );
-        QuizPagerAdapter avpAdapter = new QuizPagerAdapter(getParentFragmentManager(), getLifecycle());
-        pager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL );
-        pager.setAdapter( avpAdapter );
+        ViewPager2 pager = getView().findViewById(R.id.viewpager);
+        QuizPagerAdapter avpAdapter = new QuizPagerAdapter(getChildFragmentManager(), getLifecycle());
+        pager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+        pager.setAdapter(avpAdapter);
 
         pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
-
 
 
             }
@@ -105,8 +101,7 @@ public class QuizFragment extends Fragment {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels);
 
 
-                quizData.updateAnsweredCountandScore(answersPicked.size(),sixQuestions,answersPicked);
-                System.out.println(QuizView.check(QuizView.answerChosen, QuizView.answerCorrect));
+                quizData.updateAnsweredCountandScore(answersPicked.size(), sixQuestions, answersPicked);
 
 
                 if (answersPicked.size() != 6 && position == 6) {
@@ -115,34 +110,34 @@ public class QuizFragment extends Fragment {
                 }
 
 
-
-                if (answersPicked.size() == 6 && position == 5 ) {
+                if (answersPicked.size() == 6 && position == 5) {
                     quizData.updateDate();
 
-                    Intent intent = new Intent(getActivity(),QuizResultActivity.class);
+                    Intent intent = new Intent(getActivity(), QuizResultActivity.class);
                     Bundle bundle = new Bundle();
-                    bundle.putDouble("Score",quizData.getQuiz().getQuizResult());
-                    bundle.putString("Date",quizData.getQuiz().getDate());
+                    bundle.putDouble("Score", quizData.getQuiz().getQuizResult());
+                    bundle.putString("Date", quizData.getQuiz().getDate());
                     intent.putExtra("Bundle", bundle);
                     startActivity(intent);
 
                     FragmentManager fragmentManager = getParentFragmentManager();
-                    fragmentManager.beginTransaction().replace( R.id.fragmentContainerView, new HomeView()).commit();
+                    fragmentManager.beginTransaction().replace(R.id.fragmentContainerView, new HomeView()).commit();
 
 
                 }
-
-
-
 
 
             }
         });
 
 
-
     }
 
+    /**
+     * Returns an array list of type Questions that contains unique objects of Questions
+     *
+     * @return array list of type Questions
+     */
     public ArrayList<Questions> getRandomQuestions() {
         ArrayList<Questions> randomQuestions = new ArrayList<Questions>();
         Random rand = new Random();

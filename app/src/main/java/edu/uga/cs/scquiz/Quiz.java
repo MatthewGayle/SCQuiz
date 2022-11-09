@@ -18,7 +18,18 @@ public class Quiz {
     private String date;
     private long id;
 
-
+    /**
+     * Quiz entity
+     *
+     * @param answerCount - count of questions answered
+     * @param quizResult  - score
+     * @param question1
+     * @param question2
+     * @param question3
+     * @param question4
+     * @param question5
+     * @param question6
+     */
     public Quiz(int answerCount, double quizResult, long question1, long question2, long question3, long question4, long question5, long question6) {
         this.id = -1;
         this.answerCount = answerCount;
@@ -34,9 +45,11 @@ public class Quiz {
 //        this.date = dateFormat.format(date);
 
     }
+
     public void setDate(String date) {
         this.date = date;
     }
+
     public int getAnswerCount() {
         return answerCount;
     }
@@ -88,7 +101,7 @@ public class Quiz {
     public static String getcurrentDate() {
         SimpleDateFormat etDf = new SimpleDateFormat("MM/dd/yyyy 'at' hh:mm:ssa 'ET'");
         TimeZone etTimeZone = TimeZone.getTimeZone("America/New_York");
-        etDf.setTimeZone( etTimeZone );
+        etDf.setTimeZone(etTimeZone);
 
         Date currentDate = new Date();
 

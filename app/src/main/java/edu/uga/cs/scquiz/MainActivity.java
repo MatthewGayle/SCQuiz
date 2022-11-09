@@ -1,4 +1,5 @@
 package edu.uga.cs.scquiz;
+
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -31,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
     private boolean databaseCreated = true;
 
 
-
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
     private NavigationView navigationView;
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         // It will be automatically invoked by Android, when we call the execute method
         // in the onCreate callback (the job leads review activity is started).
         @Override
-        protected List<Questions> doInBackground( Void... params ) {
+        protected List<Questions> doInBackground(Void... params) {
 
             questionsData = new QuestionsData(getApplicationContext());
             questionsData.open();
@@ -62,12 +62,10 @@ public class MainActivity extends AppCompatActivity {
             }
 
 
-
-
             questionList = questionsData.read();
 
 
-            Log.d( TAG, "QuestionDBReader: questions retrieved: " + questionList.size() );
+            Log.d(TAG, "QuestionDBReader: questions retrieved: " + questionList.size());
 
 
             return questionList;
@@ -78,18 +76,24 @@ public class MainActivity extends AppCompatActivity {
         // values for the RecyclerView.
         // onPostExecute is like the notify method in an asynchronous method call discussed in class.
         @Override
-        protected void onPostExecute( List<Questions> qList ) {
+        protected void onPostExecute(List<Questions> qList) {
             ;
-            questionList.addAll( qList );
+            questionList.addAll(qList);
 
 
-            Log.d( TAG, "QuestionsDBReader: qList.size(): " + questionList.size());
+            Log.d(TAG, "QuestionsDBReader: qList.size(): " + questionList.size());
 
             // create the RecyclerAdapter and set it for the RecyclerView
         }
 
 
     }
+
+    /**
+     * Checks if the directory to the database exists
+     *
+     * @return true if checkDB is not null or false if so
+     */
     private boolean checkDataBase() {
         String destPath = getFilesDir().getPath();
         destPath = destPath.substring(0, destPath.lastIndexOf("/")) + "/databases/SCQuizDatabase";
@@ -121,40 +125,52 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public static List<Questions>  getQuestionList() {
+    /**
+     * Returns locally declared questionList
+     *
+     * @return questionList
+     */
+    public static List<Questions> getQuestionList() {
 
         return questionList;
     }
 
+
+    /**
+     * Sets of draw view
+     *
+     * @return returns instantiated ActionBarDrawToggle
+     */
     private ActionBarDrawerToggle setupDrawerToggle() {
-        // NOTE: Make sure you pass in a valid toolbar reference.  ActionBarDrawToggle() does not require it
-        // and will not render the hamburger icon without it.
-        return new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open,  R.string.navigation_drawer_close );
+        return new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
     }
 
+    /**
+     * Preparing the navigation drawer to display the needed componenets
+     */
     public void setNav() {
-        toolbar = findViewById( R.id.toolbar );
+        toolbar = findViewById(R.id.toolbar);
 
         // using toolbar as ActionBar
-        setSupportActionBar( toolbar );
+        setSupportActionBar(toolbar);
 
         // Find our drawer view
-        drawerLayout = (DrawerLayout) findViewById( R.id.drawer_layout );
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerToggle = setupDrawerToggle();
 
-        drawerToggle.setDrawerIndicatorEnabled( true );
+        drawerToggle.setDrawerIndicatorEnabled(true);
         drawerToggle.syncState();
 
         // Connect DrawerLayout events to the ActionBarToggle
-        drawerLayout.addDrawerListener( drawerToggle );
+        drawerLayout.addDrawerListener(drawerToggle);
 
         // Find the drawer view
-        navigationView = findViewById( R.id.nvView );
+        navigationView = findViewById(R.id.nvView);
 
 
         navigationView.setNavigationItemSelectedListener(
                 menuItem -> {
-                    selectDrawerItem( menuItem );
+                    selectDrawerItem(menuItem);
 
                     return true;
                 });
@@ -162,45 +178,37 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void selectDrawerItem( MenuItem menuItem ) {
+    /**
+     * Decides which fragment to launch or activity based on which menu item was selected
+     *
+     * @param menuItem - menu item that was engaged
+     */
+    public void selectDrawerItem(MenuItem menuItem) {
         Fragment fragment = null;
 
         // Create a new fragment based on the used selection in the nav drawer
         FragmentManager fragmentManager = getSupportFragmentManager();
-        switch( menuItem.getItemId() ) {
+        switch (menuItem.getItemId()) {
             case R.id.start_quiz:
                 fragment = new QuizFragment();
-                fragmentManager.beginTransaction().replace( R.id.fragmentContainerView, fragment).commit();
+                fragmentManager.beginTransaction().replace(R.id.fragmentContainerView, fragment).commit();
                 break;
             case R.id.quiz_review:
-                Intent intent = new Intent(getApplicationContext(),PreviousQuizActivity.class);
+                Intent intent = new Intent(getApplicationContext(), PreviousQuizActivity.class);
 
                 startActivity(intent);
 
                 break;
             default:
                 fragment = new HomeView();
-                fragmentManager.beginTransaction().replace( R.id.fragmentContainerView, fragment).commit();
+                fragmentManager.beginTransaction().replace(R.id.fragmentContainerView, fragment).commit();
 
         }
 
-        // Set up the fragment by replacing any existing fragment in the main activity
-
-
-
-        /*
-        // this is included here as a possible future modification
-        // Highlight the selected item has been done by NavigationView
-        menuItem.setChecked( true );
-        // Set action bar title
-        setTitle( menuItem.getTitle());
-         */
 
         // Close the navigation drawer
         drawerLayout.closeDrawers();
     }
-
-
 
 
 }

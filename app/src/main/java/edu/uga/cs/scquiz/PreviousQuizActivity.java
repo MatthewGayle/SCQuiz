@@ -41,10 +41,9 @@ public class PreviousQuizActivity extends AppCompatActivity {
 
         new QuizDBReader().execute();
 
-        recyclerView = findViewById( R.id.recyclerView );
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager( this );
-        recyclerView.setLayoutManager( layoutManager );
-
+        recyclerView = findViewById(R.id.recyclerView);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
 
 
     }
@@ -56,25 +55,23 @@ public class PreviousQuizActivity extends AppCompatActivity {
         // It will be automatically invoked by Android, when we call the execute method
         // in the onCreate callback (the job leads review activity is started).
         @Override
-        protected List<Quiz> doInBackground( Void... params ) {
+        protected List<Quiz> doInBackground(Void... params) {
 
-            quizData= new QuizData(getApplicationContext());
+            quizData = new QuizData(getApplicationContext());
             quizData.open();
 
             List<Quiz> quizList = null;
 
 
-
             quizList = quizData.read();
 
 
-            Log.d( "QUIZZESFETCHED", "QuizDBReader: quizzes retrieved: " + quizList.size() );
-            recyclerAdapter = new RecycleAdapter( getBaseContext(), quizList );
-            recyclerView.setAdapter( recyclerAdapter );
+            Log.d("QUIZZESFETCHED", "QuizDBReader: quizzes retrieved: " + quizList.size());
+            recyclerAdapter = new RecycleAdapter(getBaseContext(), quizList);
+            recyclerView.setAdapter(recyclerAdapter);
 
             return quizList;
         }
-
 
 
         // This method will be automatically called by Android once the db reading
@@ -82,15 +79,15 @@ public class PreviousQuizActivity extends AppCompatActivity {
         // values for the RecyclerView.
         // onPostExecute is like the notify method in an asynchronous method call discussed in class.
         @Override
-        protected void onPostExecute( List<Quiz> qList ) {
+        protected void onPostExecute(List<Quiz> qList) {
             ;
-            quizList.addAll( qList );
+            quizList.addAll(qList);
 
             for (Quiz quiz : quizList) {
                 System.out.println(quiz.getDate());
             }
 
-            Log.d( "QUIZLIST", "QuestionsDBReader: qList.size(): " + quizList.size());
+            Log.d("QUIZLIST", "QuestionsDBReader: qList.size(): " + quizList.size());
 
             // create the RecyclerAdapter and set it for the RecyclerView
         }
@@ -105,10 +102,6 @@ public class PreviousQuizActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == android.R.id.home) {
             onBackPressed();
-
-
-
-
             return true;
         }
 

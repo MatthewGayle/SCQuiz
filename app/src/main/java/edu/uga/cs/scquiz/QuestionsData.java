@@ -1,4 +1,5 @@
 package edu.uga.cs.scquiz;
+
 import android.content.res.AssetManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -24,11 +25,11 @@ import java.util.List;
 // CONTAINS METHODS TO OPEN AND CLOSE DB, READ FROM CSV AND INSERT INTO DB
 public class QuestionsData {
 
-    private SQLiteDatabase   db;
-    private SQLiteOpenHelper  dbHelper;
+    private SQLiteDatabase db;
+    private SQLiteOpenHelper dbHelper;
     public static final String DEBUG_TAG = "QuestionsData";
 
-    private static final String[] columns =  {
+    private static final String[] columns = {
             DBHelper.ID,
             DBHelper.STATE,
             DBHelper.CAPITAL,
@@ -36,35 +37,39 @@ public class QuestionsData {
             DBHelper.CITY_THREE
     };
 
-    public QuestionsData( Context context ) {
-        this.dbHelper = DBHelper.getInstance( context );
+    public QuestionsData(Context context) {
+        this.dbHelper = DBHelper.getInstance(context);
     }
 
     public void open() {
         db = dbHelper.getWritableDatabase();
-
     }
 
 
-
     public void close() {
-        if( dbHelper != null ) {
+        if (dbHelper != null) {
             dbHelper.close();
         }
     }
 
+    /**
+     * Reads from the table and inserts the values read into the Questions constructor
+     * whose referenced is stored in an array list
+     *
+     * @return ArrayList<Questions> questions
+     */
     public List<Questions> read() {
         ArrayList<Questions> questions = new ArrayList<>();
         Cursor cursor = null;
         int columnIndex;
 
         try {
-            cursor = db.query(DBHelper.TABLE_NAME, columns,null, null,
-                    null, null, null );
+            cursor = db.query(DBHelper.TABLE_NAME, columns, null, null,
+                    null, null, null);
 
-            if( cursor != null && cursor.getCount() > 0 ) {
+            if (cursor != null && cursor.getCount() > 0) {
 
-                while( cursor.moveToNext() ) {
+                while (cursor.moveToNext()) {
                     //System.out.println(cursor.getPosition());
                     //columnIndex = cursor.getColumnIndex(DBHelper.STATE);
                     //System.out.println(cursor.getString(columnIndex));
@@ -90,20 +95,17 @@ public class QuestionsData {
                     Log.d(DEBUG_TAG, "Retrieved question: " + current);
 
 
-
                 }
 
 
             }
-            if( cursor != null )
-                Log.d( DEBUG_TAG, "Number of records from DB: " + cursor.getCount() );
+            if (cursor != null)
+                Log.d(DEBUG_TAG, "Number of records from DB: " + cursor.getCount());
             else
-                Log.d( DEBUG_TAG, "Number of records from DB: 0" );
-        }
-        catch( Exception e ){
-            Log.d( DEBUG_TAG, "Exception caught: " + e );
-        }
-        finally{
+                Log.d(DEBUG_TAG, "Number of records from DB: 0");
+        } catch (Exception e) {
+            Log.d(DEBUG_TAG, "Exception caught: " + e);
+        } finally {
             // we should close the cursor
             if (cursor != null) {
                 cursor.close();
@@ -113,20 +115,34 @@ public class QuestionsData {
         return questions;
 
 
-
     }
 
-    public void insert(String state,String capital, String secondCity, String thirdCity) {
+    /**
+     * Inserts entry in the table with the appropriated information
+     *
+     * @param state      - state
+     * @param capital    - capital of state
+     * @param secondCity - a city in the state
+     * @param thirdCity  - another city in the state
+     */
+    public void insert(String state, String capital, String secondCity, String thirdCity) {
         ContentValues values = new ContentValues();
         values.put(DBHelper.STATE, state);
         values.put(DBHelper.CAPITAL, capital);
         values.put(DBHelper.CITY_TWO, secondCity);
         values.put(DBHelper.CITY_THREE, thirdCity);
-        long id = db.insert( DBHelper.TABLE_NAME, null, values ); //returns ID
-        Log.d( DEBUG_TAG, "Stored new question with id: " + String.valueOf( id ) );
+        long id = db.insert(DBHelper.TABLE_NAME, null, values); //returns ID
+        Log.d(DEBUG_TAG, "Stored new question with id: " + String.valueOf(id));
 
     }
 
+    /**
+     * Reads the CSV and calls the insert() method
+     *
+     * @param context
+     * @throws IOException
+     * @throws CsvValidationException
+     */
     public void readCSVandInsert(Context context) throws IOException, CsvValidationException {
 
 
@@ -144,7 +160,6 @@ public class QuestionsData {
                 String second = nextRow[2];
                 String third = nextRow[3];
                 insert(state, capital, second, third);
-
 
 
             }

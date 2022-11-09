@@ -17,7 +17,6 @@ public class QuizPagerAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
 
 
-
         return QuizView.newInstance(position);
     }
 
@@ -26,7 +25,6 @@ public class QuizPagerAdapter extends FragmentStateAdapter {
 
         return QuizView.getNumberOfVersions();
     }
-
 
 
 }
